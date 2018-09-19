@@ -13,6 +13,9 @@ class Category(models.Model):
     """
     name = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.name
+
 
 class Tag(models.Model):
     """
@@ -20,6 +23,9 @@ class Tag(models.Model):
     CharField,max_length=100
     """
     name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
 
 
 class Post(models.Model):
@@ -49,4 +55,7 @@ class Post(models.Model):
 
     # 作者,使用原生的user
     author = models.ForeignKey(User)
+
+    def __str__(self):
+        return self.title
 
