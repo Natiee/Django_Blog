@@ -8,7 +8,7 @@ from markdown.extensions.toc import TocExtension
 
 
 def index(request):
-    post_list = Post.objects.all().order_by('-create_time')
+    post_list = Post.objects.all()
 
     context = {
         'post_list': post_list,
@@ -46,12 +46,12 @@ def archives(request, year, month):
     """归档页面"""
     post_list = Post.objects.filter(
         create_time__year=year,
-        create_time__month=month).order_by('-create_time')
+        create_time__month=month)
     return render(request,'blog/index.html',context={'post_list':post_list})
 
 
 def category(request, pk):
     """分类页面"""
     cate = get_object_or_404(Category, pk=pk)
-    post_list = Post.objects.filter(category=cate).order_by('-create_time')
+    post_list = Post.objects.filter(category=cate)
     return render(request, 'blog/index.html', context={'post_list':post_list})

@@ -63,3 +63,6 @@ class Post(models.Model):
     # 记得要从django.urls中导入reverse函数
     def get_absolute_url(self):
         return reverse('blog:detail',kwargs={'pk': self.pk})
+
+    class Meta:
+        ordering = ['-create_time']
