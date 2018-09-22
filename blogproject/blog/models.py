@@ -1,8 +1,10 @@
+import markdown
 from django.db import models
 from django.urls import reverse
 # Create your models here.
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.html import strip_tags
 
 
 class Category(models.Model):
@@ -71,6 +73,24 @@ class Post(models.Model):
     # 记得要从django.urls中导入reverse函数
     def get_absolute_url(self):
         return reverse('blog:detail',kwargs={'pk': self.pk})
+
+    def save(self, *args, **kwargs):
+        """文章摘要"""
+        # 如果没有填写摘要
+        if not self.excerpt:
+            # 实例化一个Markdown 类,用于渲染body的文本
+            md = markdown.Markdown(extensions=[
+                'markdown.extensions.extra',
+                'markdown.extensions.codehilite',
+            ])
+            # 先将 Markdown 文本渲染成 HTML 文本
+            # strip_tags 去掉 HTML 文本的全部 HTML 标签
+            # 从文本摘取前 54 个字符赋给 excerpt
+            self.excerpt = strip_tags(md.convert(self.body))[:54]
+
+        # 调用父类的 save方法 保存到数据库
+        super(Post, self).save(*args, **kwargs)
+
 
     class Meta:
         """统一以降序排序"""
