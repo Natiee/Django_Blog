@@ -1,6 +1,7 @@
 import markdown
 from django.shortcuts import render,get_object_or_404
 from .models import Post, Category
+from comments.forms import CommentForm
 # Create your views here.
 from django.http import HttpResponse
 from markdown.extensions.toc import TocExtension
@@ -8,7 +9,12 @@ from markdown.extensions.toc import TocExtension
 
 def index(request):
     post_list = Post.objects.all().order_by('-create_time')
-    return render(request, 'blog/index.html', context={'post_list': post_list})
+
+    context = {
+        'post_list': post_list,
+
+    }
+    return render(request, 'blog/index.html', context=context)
 
 
 def detail(request, pk):
@@ -22,7 +28,18 @@ def detail(request, pk):
             'markdown.extensions.toc',  # 自动生成目录
         ]
     )
-    return render(request,'blog/detail.html',context={'post':post})
+    form = CommentForm()
+
+    # 获取这篇文章下的全部评论
+    comment_list = post.comments_set.all()
+    # 将文章,表单,以及评论
+    context = {
+        'post': post,
+        'form': form,
+        'comment_list': comment_list
+    }
+
+    return render(request, 'blog/detail.html', context=context)
 
 
 def archives(request, year, month):
