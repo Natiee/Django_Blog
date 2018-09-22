@@ -56,6 +56,14 @@ class Post(models.Model):
     # 作者,使用原生的user
     author = models.ForeignKey(User)
 
+    # views字段记录阅读量
+    views = models.PositiveIntegerField(default=0)
+
+    def increase_views(self):
+        """统计阅读量"""
+        self.views += 1
+        self.save(update_fields=['views'])
+
     def __str__(self):
         return self.title
 
@@ -65,4 +73,5 @@ class Post(models.Model):
         return reverse('blog:detail',kwargs={'pk': self.pk})
 
     class Meta:
+        """统一以降序排序"""
         ordering = ['-create_time']
