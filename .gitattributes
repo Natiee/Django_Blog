@@ -1,3 +1,1 @@
-*.css linguist-language=html
-*.js linguist-language=html
-*.html linguist-language=html
+*.py linguist-language=python
