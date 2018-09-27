@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
 
 {% block main %}
-    {% for post in post_list%}
-    <article class="post post-{{ post.pk }}">
+
+    {% if error_msg %}
+        <p>{{ error_msg }}</p>
+    {% endif %}
+    {% for post in post_list %}
+        <article class="post post-{{ post.pk }}">
         <header class="entry-header">
             <h1 class="entry-title">
                 <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
@@ -25,11 +29,11 @@
         </div>
     </article>
     {% empty %}
-    <div class="no-post">暂时还没有发布的文章！</div>
+        <div class="no-post">暂时还没有发布的文章！</div>
     {% endfor %}
 
-{% if is_paginated %}
-<div class="pagination">
+    {% if is_paginated %}
+    <div class="pagination">
   {% if first %}
     <a href="?page=1">1</a>
   {% endif %}
@@ -54,7 +58,8 @@
     <a href="?page={{ paginator.num_pages }}">{{ paginator.num_pages }}</a>
   {% endif %}
 </div>
-{% endif %}
+    {% endif %}
+
 
     <!--<div class="pagination">-->
         <!--<ul>-->
