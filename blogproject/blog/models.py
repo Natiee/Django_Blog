@@ -52,11 +52,11 @@ class Post(models.Model):
     # 文章摘要 可以为空,blank=True
     excerpt = models.CharField(max_length=200,blank=True)
 
-    category = models.ForeignKey(Category)  # 一对多关系,一篇文章只能对一个分类
+    category = models.ForeignKey(Category,on_delete=models.CASCADE)  # 一对多关系,一篇文章只能对一个分类
     tags = models.ManyToManyField(Tag,blank=True)  # 多对多关系,一个文章可以有多个标签,一个标签有多个文章
 
     # 作者,使用原生的user
-    author = models.ForeignKey(User)
+    author = models.ForeignKey(User,on_delete=models.CASCADE)
 
     # views字段记录阅读量
     views = models.PositiveIntegerField(default=0)
