@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'haystack',  # 搜索
     'blog',  # 注册blog应用
     'comments',  # 注册评论应用
 ]
@@ -158,9 +159,19 @@ LOGGING = {
         },
     },
     'loggers': {
-        'django': {  # 定义了一个名为django的日志器
+        'django': {  # 定义了一个名为djangrebuild_indexo的日志器
             'handlers': ['console', 'file'],
             'propagate': True,
         },
     }
 }
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'blog.whoosh_cn_backends.WhooshEngine',  # 指定whoosh引擎
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),  # 存放位置
+    },
+}
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10  # 搜索结果分页,每10项为一页
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'  # 每当有更张更新时就更新索引
+
